@@ -133,6 +133,30 @@ function mostProlificAuthor(authors) {
  ****************************************************************/
 function relatedBooks(bookId, authors, books) {
   // Your code goes here
+  /*
+  let res = authors.find(auth => {
+    if (auth.books.indexOf(bookId) !== -1) {
+      return auth;
+    }
+  });
+  */
+  let final = [];
+  authors.forEach(auth => {
+    if (auth.books.indexOf(bookId) !== -1) {
+      final.push.apply(final, auth.books);
+    }
+  });
+
+  console.log(`Final array: ${final}, of length: ${final.length}`);
+
+  let bookarray = [];
+  final.forEach(book => {
+    //console.log();
+    bookarray.push(getBookById(book, books).title);
+  });
+
+  return bookarray;
+  //console.log(`Final: ${res}`);
 }
 
 /**************************************************************
