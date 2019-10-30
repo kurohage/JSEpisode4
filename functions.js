@@ -7,9 +7,7 @@
  ****************************************************************/
 function getBookById(bookId, books) {
   // Your code goes here
-  return books.find(function(book) {
-    return book.id == bookId;
-  });
+  return books.find(book => book.id === bookId);
 }
 
 /**************************************************************
@@ -21,9 +19,9 @@ function getBookById(bookId, books) {
  ****************************************************************/
 function getAuthorByName(authorName, authors) {
   // Your code goes here
-  return authors.find(function(author) {
-    return author.name.toLowerCase() == authorName.toLowerCase();
-  });
+  return authors.find(
+    author => author.name.toLowerCase() == authorName.toLowerCase()
+  );
 }
 
 /**************************************************************
@@ -34,7 +32,7 @@ function getAuthorByName(authorName, authors) {
  ****************************************************************/
 function bookCountsByAuthor(authors) {
   // Your code goes here
-  return authors.map(function(x) {
+  return authors.map(x => {
     return {
       author: x.name,
       bookCount: x.books.length
@@ -70,6 +68,11 @@ function booksByColor(books) {
  *    ["The Hitchhikers Guide", "The Meaning of Liff"]
  ****************************************************************/
 function titlesByAuthorName(authorName, authors, books) {
+  const author = getAuthorByName(authorName, authors);
+  if (!author) return [];
+
+  return author.books.map(bookid => getBookById(bookid, books).title);
+  /*
   // Your code goes here
   let bookList = authors.find(auth => {
     if (auth.name.toLowerCase() == authorName.toLowerCase()) {
@@ -84,6 +87,7 @@ function titlesByAuthorName(authorName, authors, books) {
       if (x.id == bookid) return x.title;
     }).title;
   });
+  */
 }
 
 /**************************************************************
@@ -95,9 +99,17 @@ function titlesByAuthorName(authorName, authors, books) {
  ****************************************************************/
 function mostProlificAuthor(authors) {
   // Your code goes here
-  let numofbooks = 0; // max number of books found for an author
-  let name; // auth id of the found object
+  //let numofbooks = 0; // max number of books found for an author
+  //let name; // auth id of the found object
 
+  let bestauthor = authors[0];
+
+  authors.forEach(author => {
+    if (author.books.length > bestauthor.books.length) bestauthor = author;
+  });
+
+  return bestauthor.name;
+  /*
   authors.forEach(x => {
     if (x.books.length > numofbooks) {
       numofbooks = x.books.length;
@@ -106,6 +118,7 @@ function mostProlificAuthor(authors) {
   });
 
   return name;
+  */
 }
 
 /**************************************************************
@@ -133,13 +146,6 @@ function mostProlificAuthor(authors) {
  ****************************************************************/
 function relatedBooks(bookId, authors, books) {
   // Your code goes here
-  /*
-  let res = authors.find(auth => {
-    if (auth.books.indexOf(bookId) !== -1) {
-      return auth;
-    }
-  });
-  */
   let final = [];
   authors.forEach(auth => {
     if (auth.books.indexOf(bookId) !== -1) {
@@ -151,12 +157,10 @@ function relatedBooks(bookId, authors, books) {
 
   let bookarray = [];
   final.forEach(book => {
-    //console.log();
     bookarray.push(getBookById(book, books).title);
   });
 
   return bookarray;
-  //console.log(`Final: ${res}`);
 }
 
 /**************************************************************
